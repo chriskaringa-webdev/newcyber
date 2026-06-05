@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% set show_header = True %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="pay-hero">
+
+  <div class="container glass-card center">
+
+    <h1>Secure Payment Checkout</h1>
+
+    <p>
+      Submit your payment details below.  
+      All payments are verified manually and confirmed via WhatsApp or phone call.
+    </p>
+
+  </div>
+
+</section>
+
+
+      <!-- STATUS -->
+      <div id="statusBox" class="status-box"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- PAYMENT INSTRUCTIONS -->
+<section class="pay-footer">
+
+  <div class="container glass-card center">
+
+    <h3>Payment Instructions</h3>
+
+    <p>Send payment via M-Pesa to:</p>
+
+    <br>
+
+    <h2>📱 0715448917</h2>
+
+    <p><strong>Name:</strong> Christopher Karinga</p>
+
+    <br>
+
+    <p>
+      After payment, enter the transaction code above and submit.  
+      Your request will be verified and confirmed manually.
+    </p>
+
+  </div>
+
+</section>
+
+<!-- AJAX SCRIPT -->
+<script>
+
+document.getElementById("paymentForm").addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const statusBox = document.getElementById("statusBox");
+
+    statusBox.innerHTML = "⏳ Submitting payment...";
+    statusBox.style.color = "#facc15";
+
+    try {
+
+        const response = await fetch("/pay", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+
+            statusBox.innerHTML = `
+                ✅ Payment submitted successfully.<br><br>
+                ✔ Transaction ID: <strong>${data.transaction_id}</strong><br><br>
+                We will verify your payment and confirm via WhatsApp shortly.
+            `;
+
+            statusBox.style.color = "#22c55e";
+
+            document.getElementById("paymentForm").reset();
+
+        } else {
+
+            statusBox.innerHTML = "❌ " + data.message;
+            statusBox.style.color = "#ef4444";
+        }
+
+    } catch (error) {
+
+        statusBox.innerHTML = "❌ Server error. Please try again later.";
+        statusBox.style.color = "#ef4444";
+    }
+
+});
+
+</script>
+
+{% endblock %}

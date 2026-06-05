@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="admin-section">
+  <div class="container">
+
+    <h1>📊 Admin Dashboard</h1>
+    <p>All payments overview</p>
+    <a href="{{ url_for('logout') }}"
+   style="float:right;background:#ef4444;padding:8px 12px;border-radius:8px;color:white;">
+   Logout
+</a>
+
+    <div class="table-container">
+
+      <table class="admin-table">
+
+        <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Phone</th>
+            <th>Service</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Receipt</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for t in transactions %}
+          <tr>
+
+            <td style="font-size:12px;">{{ t.id }}</td>
+            <td>{{ t.phone }}</td>
+            <td>{{ t.service }}</td>
+            <td>KES {{ t.amount }}</td>
+
+            <td>
+              {% if t.status == "SUCCESS" %}
+                <span style="color:#22c55e;font-weight:600;">SUCCESS</span>
+              {% elif t.status == "PENDING" %}
+                <span style="color:#f97316;font-weight:600;">PENDING</span>
+              {% else %}
+                <span style="color:#ef4444;font-weight:600;">FAILED</span>
+              {% endif %}
+            </td>
+
+            <td>{{ t.mpesa_receipt or "-" }}</td>
+            <td style="font-size:12px;">{{ t.created_at }}</td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Chris Online Cyber Services{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+
+    <h1>Fast, Reliable & Secure Cyber Services</h1>
+
+    <h2 class="typing-text">
+      <span id="typed"></span>
+    </h2>
+
+    <p>
+      Professional cyber services for government applications, CV writing,
+      IT support, and business solutions across Kenya.
+    </p>
+
+    <div class="hero-actions">
+
+      <a href="{{ url_for('services') }}" class="btn-primary">
+        Explore Services
+      </a>
+
+      <a href="https://wa.me/254715448917"
+         class="btn-secondary"
+         target="_blank">
+        Chat on WhatsApp
+      </a>
+
+    </div>
+
+    <!-- TRUST STRIP -->
+    <div class="glass-card" style="margin-top: 30px;">
+      ⚡ Fast Delivery &nbsp; • &nbsp; 🔒 Secure Payments &nbsp; • &nbsp; 🇰🇪 Trusted in Kenya
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= QUICK PAY ================= -->
+<section class="quick-pay">
+
+  <div class="container">
+
+    <h2>Quick Pay Services</h2>
+
+    <div class="quick-grid">
+
+      <a href="{{ url_for('pay') }}?service=KRA%20Services&amount=300" class="quick-card">
+        KRA Filing — KES 300
+      </a>
+
+      <a href="{{ url_for('pay') }}?service=CV%20Writing&amount=500" class="quick-card">
+        CV Writing — KES 500
+      </a>
+
+      <a href="{{ url_for('pay') }}?service=IT%20Support&amount=800" class="quick-card">
+        IT Support — KES 800
+      </a>
+
+      <a href="{{ url_for('pay') }}?service=Website%20Design&amount=5000" class="quick-card">
+        Website Design — KES 15000
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  const texts = [
+    "eCitizen Services Made Easy",
+    "Fast CV Writing Services",
+    "Reliable IT Support",
+    "Secure Document Processing",
+    "Business Digital Solutions"
+  ];
+
+  let index = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function typeEffect() {
+    const current = texts[index];
+    const typedElement = document.getElementById("typed");
+
+    if (!typedElement) return;
+
+    if (!isDeleting) {
+      typedElement.textContent = current.substring(0, charIndex + 1);
+      charIndex++;
+
+      if (charIndex === current.length) {
+        isDeleting = true;
+        setTimeout(typeEffect, 1200);
+        return;
+      }
+    } else {
+      typedElement.textContent = current.substring(0, charIndex - 1);
+      charIndex--;
+
+      if (charIndex === 0) {
+        isDeleting = false;
+        index = (index + 1) % texts.length;
+      }
+    }
+
+    setTimeout(typeEffect, isDeleting ? 50 : 90);
+  }
+
+  document.addEventListener("DOMContentLoaded", typeEffect);
+</script>
+{% endblock %}
